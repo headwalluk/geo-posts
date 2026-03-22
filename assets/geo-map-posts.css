@@ -1,0 +1,27 @@
+/**
+ * geo-map-posts.css
+ */
+
+.google-map figcaption {
+  text-align: center;
+  margin-top: 0.75em;
+}
+
+.map {
+  min-height: 20em;
+}
+
+@media (min-width: 922px) {
+  .wp-block-column .map {
+    height: 100%;
+  }
+}
+
+.geo-post-map-marker .post-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.geo-post-map-marker .post-thumb-link {
+  display: block;
+}
