@@ -1,9 +1,9 @@
 # Project Tracker
 
-**Version:** 0.3.0  
-**Last Updated:** 2026-03-22  
-**Current Phase:** Milestone 1 (Tooling & Standards Setup)  
-**Overall Progress:** 0%
+**Version:** 0.4.0
+**Last Updated:** 2026-03-22
+**Current Phase:** Milestone 2 (Dead Code & Stub Removal)
+**Overall Progress:** ~10%
 
 ---
 

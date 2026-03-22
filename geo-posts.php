@@ -3,7 +3,7 @@
  * Plugin Name:       Geo Posts
  * Plugin URI:        https://headwall-hosting.com
  * Description:       Add lat/lon to posts and inject maps
- * Version:           0.3.0
+ * Version:           0.4.0
  * Author:            Paul Faulkner
  * Author URI:        https://headwall-hosting.com
  * License:           GPLv3 or later
@@ -17,7 +17,7 @@
 defined( 'ABSPATH' ) || die();
 
 const PPGP_NAME    = 'geo-posts';
-const PPGP_VERSION = '0.3.0';
+const PPGP_VERSION = '0.4.0';
 
 define( 'PPGP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PPGP_URL', plugin_dir_url( __FILE__ ) );

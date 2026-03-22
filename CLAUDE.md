@@ -1,27 +1,27 @@
-# AGENTS.md — Geo Posts WordPress Plugin
+# CLAUDE.md — Geo Posts WordPress Plugin
 
 ## Project Overview
 
 Geo Posts is a WordPress plugin (GPLv3) that adds latitude/longitude metadata to posts
-and renders Google Maps via shortcodes. It uses a sealed MIT-licensed micro-framework
-called PP-Core (`pp-core.php` + `pp-assets/`).
+and renders Google Maps via shortcodes.
 
+- **Version:** 0.4.0
 - **Namespace:** `Geo_Posts`
 - **Text domain:** `geo-posts`
 - **PHP requirement:** 8.0+
 - **No build pipeline** — no package.json, webpack, or TypeScript. JS files are vanilla
   ES5/ES6 served directly.
 - **No autoloader** — all files are manually `require_once`'d in `geo-posts.php`.
+- **No composer.json** — phpcs and phpcbf are installed globally on the host system.
 
 ## Build / Lint / Test Commands
 
-There is no test suite (no phpunit.xml, no tests/ directory). No composer.json — phpcs
-and phpcbf are installed globally on the host system.
+There is no test suite (no phpunit.xml, no tests/ directory).
 
 ### PHPCS (linting)
 
-PHPCS and WPCS are installed globally on this system. A `phpcs.xml` does not yet exist in
-the plugin root (planned for Milestone 1). When it does, these commands apply:
+PHPCS and WPCS are installed globally on this system. A `phpcs.xml` exists in the plugin
+root with prefixes and exclusions configured.
 
 ```bash
 # Lint all files
@@ -47,12 +47,38 @@ phpcs && phpcbf && phpcs    # check, auto-fix, verify
 git add . && git commit
 ```
 
-## Sealed / Do-Not-Modify Files
+### WP-CLI
 
-These are third-party framework files. **Never modify, reformat, or run phpcs on them:**
+WP-CLI is installed on the host system. Use it for plugin activation, option checks, etc.
 
-- `pp-core.php` — PP-Core micro-framework (MIT, multiple classes)
-- `pp-assets/` — PP-Core CSS/JS/images
+```bash
+wp plugin activate geo-posts
+wp option get ppgp_google_api_key
+```
+
+## Documentation Structure
+
+This project has two separate documentation directories:
+
+- **`docs/`** — User-facing documentation for website owners, designers, and developers
+  who want to use or extend the plugin. This is linked from README.md and published on
+  GitHub. Content: installation, shortcode reference, settings, API setup.
+
+- **`dev-notes/`** — Internal development documentation for contributors working on the
+  codebase. Not for end users. Content: project tracker, refactor milestones, coding
+  patterns, workflow guides, tech debt inventory.
+
+Do not mix these up. User docs go in `docs/`. Dev/refactor notes go in `dev-notes/`.
+
+## Archived Files
+
+The `archived/` directory contains the original pp-core framework files for reference:
+
+- `archived/pp-core.php` — Original PP-Core micro-framework (MIT licensed)
+- `archived/pp-assets/` — Original PP-Core CSS/JS/images
+
+These were absorbed into the plugin's own classes in v0.4.0. The archived copies are
+kept for reference only — do not modify or reference them from active code.
 
 ## File Structure
 
@@ -61,13 +87,32 @@ geo-posts/
 ├── geo-posts.php             # Main plugin entry point
 ├── constants.php             # All constants (namespace Geo_Posts)
 ├── functions-private.php     # Internal helper functions
-├── includes/                 # Core PHP classes (class-*.php)
+├── phpcs.xml                 # PHPCS configuration
+├── README.md                 # GitHub readme (lean, links to docs/)
+├── readme.txt                # WordPress.org readme
+├── CHANGELOG.md              # Version history
+├── includes/                 # Core PHP classes
+│   ├── class-component.php       # Base class (name + version)
+│   ├── class-settings-core.php   # Abstract settings base
+│   ├── class-meta-box.php        # Abstract meta box base
+│   ├── admin-ui-helpers.php      # Form rendering helpers (ppgp_ prefix)
+│   ├── class-plugin.php          # Main plugin orchestrator
+│   ├── class-settings.php        # Settings page
+│   ├── class-admin-hooks.php     # Admin hook handlers
+│   ├── class-public-hooks.php    # Front-end hook handlers
+│   ├── class-geo-post.php        # Geo post data wrapper
+│   ├── geo-post-meta-box.php     # Geo meta box registration and save
+│   ├── shortcode-single-post-map.php  # [single_post_map]
+│   └── shortcode-multi-post-map.php   # [multi_post_map]
 ├── admin-templates/          # Admin-side PHP templates
-├── assets/                   # Public-facing CSS/JS
-├── pp-core.php               # Sealed framework (DO NOT EDIT)
-├── pp-assets/                # Sealed framework assets (DO NOT EDIT)
-├── dev-notes/                # Dev documentation and project tracker
-└── .github/copilot-instructions.md  # Full 579-line coding standards
+├── assets/
+│   ├── admin/                # Admin CSS/JS (pp-admin.css, pp-admin.js)
+│   ├── geo-map-posts.css     # Public map styles
+│   └── geo-map-posts.js      # Public map JavaScript
+├── docs/                     # User-facing documentation
+├── dev-notes/                # Internal dev documentation and project tracker
+├── archived/                 # Original pp-core files (reference only)
+└── .github/copilot-instructions.md  # Full coding standards
 ```
 
 ## Code Style Guidelines
@@ -216,7 +261,7 @@ See `dev-notes/00-project-tracker.md` for the full list. High-priority items:
 - `lon`/`lng` inconsistency between PHP shortcodes and JS
 - `[multi_post_map]` hardcodes `post_type => 'post'` instead of using `OPT_GEO_POST_TYPES`
 - Multiple `if (false) {}` dead code blocks across PHP and JS files
-- No `phpcs.xml` yet
+- Commented-out code from other plugins (Fancy Product Page, Testimonials)
 
 ## Further Reading
 
